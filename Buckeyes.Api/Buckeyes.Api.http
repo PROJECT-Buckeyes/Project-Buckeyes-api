@@ -1,0 +1,6 @@
+@Buckeyes.Api_HostAddress = http://localhost:5033
+
+GET {{Buckeyes.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
