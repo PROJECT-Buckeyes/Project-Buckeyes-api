@@ -12,7 +12,6 @@ namespace Buckeyes.Domain.Catalog {
         public void AddRating(Rating rating){
             this.Ratings.Add(rating);
         }
-    }
 
     public Item(string name, string description, string brand, decimal price){
         if (string.IsNullOrEmpty(name)){
@@ -35,5 +34,7 @@ namespace Buckeyes.Domain.Catalog {
         this.Description = description;
         this.Brand = brand;
         this.Price = price;
+        this.Ratings = new List<Rating>();
+    }
     }
 }
