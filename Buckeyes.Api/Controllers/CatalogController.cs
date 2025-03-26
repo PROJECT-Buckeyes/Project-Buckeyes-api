@@ -1,11 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Buckeyes.Domain.Catalog;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Buckeyes.Data;
 
 namespace Buckeyes.Api.Controllers {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/catalog")]
 
     public class CatalogController: ControllerBase {
+        
+            private readonly StoreContext _db;
+            public CatalogController(StoreContext db){
+                _db = db;
+            
+        }
+       
+        /*
         [HttpGet]
         public IActionResult GetItems(){
             var items = new List<Item>() {
@@ -13,6 +23,12 @@ namespace Buckeyes.Api.Controllers {
                 new Item("Shorts", "Ohio State Shorts", "Nike", 44.99m)
             };
             return Ok(items);
+        }
+        */
+
+        [HttpGet]
+        public IActionResult GetItems(){
+            return Ok(_db.Items);
         }
 
 
