@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Buckeyes.Domain/Buckeyes.Domain.csproj" />
+    <ProjectReference Include="..\Buckeyes.Data\Buckeyes.Data.csproj" />
   </ItemGroup>
 
 </Project>
