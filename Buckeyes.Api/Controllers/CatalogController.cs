@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Buckeyes.Domain.Catalog;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Buckeyes.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buckeyes.Api.Controllers {
     [ApiController]
@@ -32,28 +33,17 @@ namespace Buckeyes.Api.Controllers {
         }
 
 
-        /*[HttpGet("{id:int}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetItem(int id) {
             var item = new Item("Shirt", "Ohio State Shirt", "Nike", 29.99m);
             item.Id = id;
-            return Ok(item);
-        }*/
-
-        [HttpGet("{id:int}")]
-        public IActionResult GetItem(int id) {
-            var item = _db.Items.Find(id);
-            if(item == null){
-                return NotFound();
-            }
             return Ok(item);
         }
 
         [HttpPost]
         public IActionResult Post(Item item)
         {
-            _db.Items.Add(item);
-            _db.SaveChanges();
-            return Created($"/catalog/{item.Id}", item);
+            return Created("/catalog/42", item);
         }
 
         [HttpPost("{id:int}/ratings")]
@@ -78,7 +68,46 @@ namespace Buckeyes.Api.Controllers {
             return NoContent();
         }
 
+        [HttpPost("{id}/ratings")]
+        public IActionResult PostRating(int id, [FromBody] Rating rating){
+        var item = _db.Items.Find(id);
+        if(item == null){
+            return NotFound();
+        }
 
+        item.AddRating(rating);
+        _db.SaveChanges();
+
+        return Ok(item);  
+    }
+
+    [HttpPut("{id:int}")]
+    public IActionResult PutItem(int id, [FromBody]Item item){
+        if (id != item.Id){
+            return BadRequest();
+        }
+
+        if(_db.Items.Find(id) == null){
+            return NotFound();
+        }
+
+        _db.Entry(item).State = EntityState.Modified;
+        _db.SaveChanges();
+        return NoContent();
 
     }
+
+    [HttpDelete("{id:int}")]
+    public IActionResult DeleteItem(int id){
+        var item = _db.Items.Find(id);
+        if(item == null){
+            return NotFound();
+        }
+
+        _db.Items.Remove(item);
+        _db.SaveChanges();
+        return Ok();
 }
+    
+        }
+    }
