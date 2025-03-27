@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Buckeyes.Domain.Catalog;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Buckeyes.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buckeyes.Api.Controllers {
     [ApiController]
@@ -56,7 +57,7 @@ namespace Buckeyes.Api.Controllers {
             return Created($"/catalog/{item.Id}", item);
         }
 
-        [HttpPost("{id:int}/ratings")]
+        [HttpPost("{id}/ratings")]
         public IActionResult PostRating(int id, [FromBody] Rating rating)
         {
             var item = new Item("Shirt", "Ohio State shirt", "Nike", 29.99m);
@@ -78,7 +79,57 @@ namespace Buckeyes.Api.Controllers {
             return NoContent();
         }
 
+        [HttpPost("{id:int}/ratings")]
+        public IActionResult PostRating(int id, [FromBody] Rating rating){
+        var item = _db.Items.Find(id);
+        if(item == null){
+            return NotFound();
+        }
 
+        item.AddRating(rating);
+        _db.SaveChanges();
+
+        return Ok(item);  
+    }
+
+    public IActionResult PutItem(int id, [FromBody]Item item){
+        if (id != item.Id){
+            return BadRequest();
+        }
+
+        if(_db.Items.Find(id) == null){
+            return NotFound();
+        }
+
+        _db.Entry(item).State = EntityState.Modified;
+        _db.SaveChanges();
+        return NoContent();
 
     }
+
+    public IActionResult DeleteItem(int id){
+        var item = _db.Items.Find(id);
+        if(item == null){
+            return NotFound();
+        }
+
+        _db.Items.Remove(item);
+        _db.SaveChanges();
+        return Ok();
+    }
+    
+
+    [HttpDelete("{id:int}")]
+    public IActionResult DeleteRating(int id){
+        var item = _db.Items.Find(id);
+        if(item == null){
+            return NotFound();
+        }
+
+        _db.Items.Remove(item);
+        _db.SaveChanges();
+        return Ok();
 }
+    
+        }
+    }
