@@ -57,7 +57,7 @@ namespace Buckeyes.Api.Controllers {
             return Created($"/catalog/{item.Id}", item);
         }
 
-        [HttpPost("{id}/ratings")]
+        [HttpPost("{id:int}/ratings")]
         public IActionResult PostRating(int id, [FromBody] Rating rating)
         {
             var item = new Item("Shirt", "Ohio State shirt", "Nike", 29.99m);
@@ -79,7 +79,7 @@ namespace Buckeyes.Api.Controllers {
             return NoContent();
         }
 
-        [HttpPost("{id:int}/ratings")]
+        [HttpPost("{id}/ratings")]
         public IActionResult PostRating(int id, [FromBody] Rating rating){
         var item = _db.Items.Find(id);
         if(item == null){
@@ -92,6 +92,7 @@ namespace Buckeyes.Api.Controllers {
         return Ok(item);  
     }
 
+    [HttpPut("{id:int}")]
     public IActionResult PutItem(int id, [FromBody]Item item){
         if (id != item.Id){
             return BadRequest();
@@ -107,20 +108,8 @@ namespace Buckeyes.Api.Controllers {
 
     }
 
-    public IActionResult DeleteItem(int id){
-        var item = _db.Items.Find(id);
-        if(item == null){
-            return NotFound();
-        }
-
-        _db.Items.Remove(item);
-        _db.SaveChanges();
-        return Ok();
-    }
-    
-
     [HttpDelete("{id:int}")]
-    public IActionResult DeleteRating(int id){
+    public IActionResult DeleteItem(int id){
         var item = _db.Items.Find(id);
         if(item == null){
             return NotFound();
