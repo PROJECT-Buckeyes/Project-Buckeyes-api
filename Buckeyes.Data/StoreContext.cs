@@ -7,9 +7,9 @@ public class StoreContext: DbContext{
     public StoreContext CreateDBContext()
     {
         var optionsBuilder = new DbContextOptionsBuilder<StoreContext>()
-            .UseSqlite("Data Source=../Registrar.sqlite")
+            .UseSqlite("Data Source=../Registrar.sqlite");
                
-        return new StoreContext(options);
+        return new StoreContext(optionsBuilder.Options);
     }
     public StoreContext(DbContextOptions<StoreContext> options): base(options){ }
     public DbSet<Item> Items {get; set;}
