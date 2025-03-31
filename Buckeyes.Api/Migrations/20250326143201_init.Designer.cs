@@ -11,7 +11,7 @@ namespace Buckeyes.Api.Migrations
 {
     [DbContext(typeof(StoreContext))]
     [Migration("20250326143201_init")]
-    partial class init
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
