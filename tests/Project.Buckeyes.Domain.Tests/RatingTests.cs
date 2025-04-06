@@ -17,7 +17,14 @@ public sealed class RatingTests
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
+    public void Cannot_Create_Rating_With_Invalid_UserName() {
+        var rating = new Rating(5, null, "Review");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
     public void Cannot_Create_Rating_With_Invalid_Stars() {
         var rating = new Rating(0, "Mike", "Great fit!");
     }
+
 }
